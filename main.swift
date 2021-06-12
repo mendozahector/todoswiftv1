@@ -2,14 +2,32 @@ import Foundation
 
 class TodoItem {
     var name = ""
-    var added = Date()
+    var added = ""
 }
 
 var list = [TodoItem]()
 
-var item = TodoItem()
-item.name = "Learn Swift"
-list.append(item)
+let filePath = "/Users/hectormendoza/Desktop/Spring 2021/Applied Programming/todoswiftv1/swift/todov1swift/todolist.txt"
+var myCounter: Int
+do {
+    let contents = try String(contentsOfFile: filePath)
+    let lines = contents.split(separator:"\n")
+    myCounter = lines.count
+    
+    for line in lines {
+        let item = line.split(separator: ",")
+        let newItem = TodoItem()
+        
+        newItem.name = String(item[0])
+        newItem.added = String(item[1])
+        
+        list.append(newItem)
+    }
+    
+    } catch {
+        print(error.localizedDescription)
+        exit(0)
+    }
 
 func showList(list: [TodoItem]) {
     print("This is your TODO list:")
@@ -45,7 +63,13 @@ func view() {
 func add() -> TodoItem {
     let newItem = TodoItem()
     print("Enter new item name:")
+    
+    let date = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MM-dd-yyy"
+    
     newItem.name = readLine() ?? "New Item"
+    newItem.added = dateFormatter.string(from: date)
     
     print("New item has been added to the list. Thank you.")
     
@@ -71,8 +95,15 @@ print(menu)
 
 while let input = readLine() {
     guard input != "0" else {
-            break
+        try FileManager.default.removeItem(atPath: filePath)
+        var items = ""
+        for item in list {
+            let line = item.name + "," + item.added + "\n"
+            items.append(line)
         }
+        try items.write(to: URL(fileURLWithPath: filePath), atomically: false, encoding: .utf8)
+        break
+    }
     
     print()
     

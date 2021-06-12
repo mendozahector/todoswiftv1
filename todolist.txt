@@ -1,2 +1,2 @@
-Learn Swift, 2021-05-25 19:24:16 +0000
-Xcode Basics, 2021-05-28 14:15:18 +0000
+Learn Swift,05-25-2021
+Xcode Basics,05-28-2021
