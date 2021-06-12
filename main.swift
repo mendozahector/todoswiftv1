@@ -1,18 +1,24 @@
 import Foundation
 
+// Todo Item class containing name and date added (MM-dd-yyy).
 class TodoItem {
     var name = ""
     var added = ""
 }
 
+// Array containing all of our todo items.
 var list = [TodoItem]()
 
+// This is our local file containing our data.
+// Please update according to your directory.
+// Will be updated to a realtime database in v3.
 let filePath = "/Users/hectormendoza/Desktop/Spring 2021/Applied Programming/todoswiftv1/swift/todov1swift/todolist.txt"
-var myCounter: Int
+
+// We try to load the text file (todolist.txt).
+// If we are unable to load the text file, we exit the program.
 do {
     let contents = try String(contentsOfFile: filePath)
     let lines = contents.split(separator:"\n")
-    myCounter = lines.count
     
     for line in lines {
         let item = line.split(separator: ",")
@@ -29,6 +35,7 @@ do {
         exit(0)
     }
 
+// Function displaying all of the todo items to the user.
 func showList(list: [TodoItem]) {
     print("This is your TODO list:")
     
@@ -39,6 +46,9 @@ func showList(list: [TodoItem]) {
     }
 }
 
+// View Todo Items Menu
+// User is able to view the details of each todo item,
+// after selecting the index of the item.
 func view() {
     showList(list: list)
     
@@ -60,6 +70,10 @@ func view() {
     }
 }
 
+// Add Todo Item Menu
+// User is prompted for the name of the todo item.
+// Date is automatically added with format MM-dd-yyyy.
+// New TodoItem is stored into the list array.
 func add() -> TodoItem {
     let newItem = TodoItem()
     print("Enter new item name:")
@@ -76,6 +90,9 @@ func add() -> TodoItem {
     return newItem
 }
 
+// Delete Todo Item Menu
+// User is prompted for TodoItem index to be deleted.
+// If valid, we delete the TodoItem.
 func delete() -> Int {
     showList(list: list)
     
@@ -83,6 +100,7 @@ func delete() -> Int {
     return Int(readLine() ?? "-1") ?? -1
 }
 
+// Our Main Menu with the program options.
 let menu = """
     Welcome to your TODO organizer app. Please select your option:
     1. View TODO items.
@@ -93,6 +111,7 @@ let menu = """
 
 print(menu)
 
+// Main Menu logic, we keep the program running under user enter zero (0).
 while let input = readLine() {
     guard input != "0" else {
         try FileManager.default.removeItem(atPath: filePath)
@@ -107,6 +126,11 @@ while let input = readLine() {
     
     print()
     
+    // Depending on user input, we access the corresponding menu item.
+    // 1 - We go to the view TodoItems function.
+    // 2 - We go to the add TodoItems function.
+    // 3 - We go to the delete TodoItems function.
+    // User can only delete and view TodoItems if the TodoItem list is not empty.
     switch input {
     case "1":
         if list.count < 1 {
