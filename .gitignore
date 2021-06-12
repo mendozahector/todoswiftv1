@@ -115,5 +115,4 @@ DerivedData/
 # macOS
 .vscode
 .DS_Store
-README.md
 swift/
